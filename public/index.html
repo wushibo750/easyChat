@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+            src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+            integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+            crossorigin="anonymous"
+    ></script>
+    <!-- 引入CDN-->
+</head>
+<body>
+<input type="text" />
+<button onclick="send()">发送</button>
+</body>
+<script>
+    let socket = io.connect('http://127.0.0.1:3000') // 地址和websocket创建的地址一样
+    socket.onopen=()=>{
+        console.log("连接成功index");
+    }
+    socket.onmessage=(msgObj)=>{
+        console.log(msgObj)
+        alert(msgObj.data)
+    }
+    function send() {
+        let text = document.querySelector('input').value
+        socket.emit('sendMsg', text) // 创建自定义事件 和 nodejs中的 socket.on('sendMsg',Function) 对应
+        socket.on('back', data => {
+            // 监控自定义事件 和 nodejs中的 io.on('back',Function)
+            console.log(data)
+        })
+    }
+
+</script>
+</html>
